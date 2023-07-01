@@ -111,27 +111,33 @@ def process_file(input_file, output_directory):
         print('Lucky man, you have your prefetch file ready to be parsed!')
 
 
+def process_directory(directory, output_directory):
+    """Process all files in a directory and its subdirectories."""
+    for root, _, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith('.pf'):
+                input_file = os.path.join(root, filename)
+                process_file(input_file, output_directory)
+
+
 def main():
     """Utility core."""
     if len(sys.argv) == 4 and sys.argv[1] == '-f':
         # Process a single file with specified output directory
         process_file(sys.argv[2], sys.argv[3])
     elif len(sys.argv) == 3 and os.path.isdir(sys.argv[1]):
-        # Process all files in a directory with specified output directory
+        # Process all files in a directory and its subdirectories with specified output directory
         directory = sys.argv[1]
         if not os.path.isdir(directory):
             sys.exit('Invalid directory specified.')
         output_directory = sys.argv[2]
         os.makedirs(output_directory, exist_ok=True)
 
-        for filename in os.listdir(directory):
-            if filename.endswith('.pf'):
-                input_file = os.path.join(directory, filename)
-                process_file(input_file, output_directory)
+        process_directory(directory, output_directory)
     else:
         sys.exit('Usage:\n'
-                 '  To process a single file: python w10pfdecomp.py -f [win10compressed.pf] [output_directory]\n'
-                 '  To process all files in a directory: python w10pfdecomp.py [directory] [output_directory]')
+                 'To process a single file: python script.py -f [win10compressed.pf] [output_directory]\n'
+                 'To process all files in a directory: python script.py [directory] [output_directory]')
 
 
 if __name__ == "__main__":
