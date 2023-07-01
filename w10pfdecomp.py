@@ -130,7 +130,7 @@ def main():
                 process_file(input_file, output_directory)
     else:
         sys.exit('Usage:\n'
-                 '  To process a single file: python script.py -f [win10compressed.pf] [output_directory]\n'
+                 '  To process a single file: python w10pfdecomp.py -f [win10compressed.pf] [output_directory]\n'
                  '  To process all files in a directory: python w10pfdecomp.py [directory] [output_directory]')
 
 
