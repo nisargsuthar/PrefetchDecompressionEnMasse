@@ -29,7 +29,7 @@ def tohex(val, nbits):
     return hex((val + (1 << nbits)) % (1 << nbits))
 
 
-def process_file(input_file, output_file):
+def process_file(input_file, output_directory):
     """Process a single file."""
     NULL = ctypes.POINTER(ctypes.c_uint)()
     SIZE_T = ctypes.c_uint
@@ -102,6 +102,9 @@ def process_file(input_file, output_file):
         if ntFinalUncompressedSize.value != decompressed_size:
             print('Decompressed with a different size than original!')
 
+        output_filename = os.path.basename(input_file)
+        output_file = os.path.join(output_directory, output_filename)
+
         with open(output_file, 'wb') as fout:
             fout.write(bytearray(ntDecompressed))
 
@@ -110,24 +113,25 @@ def process_file(input_file, output_file):
 
 def main():
     """Utility core."""
-    if len(sys.argv) == 3:
-        # Process a single file
-        process_file(sys.argv[1], sys.argv[2])
-    elif len(sys.argv) == 2:
-        # Process all files in a directory
+    if len(sys.argv) == 4 and sys.argv[1] == '-f':
+        # Process a single file with specified output directory
+        process_file(sys.argv[2], sys.argv[3])
+    elif len(sys.argv) == 3 and os.path.isdir(sys.argv[1]):
+        # Process all files in a directory with specified output directory
         directory = sys.argv[1]
         if not os.path.isdir(directory):
             sys.exit('Invalid directory specified.')
-        output_directory = os.path.join(directory, 'output')
+        output_directory = sys.argv[2]
         os.makedirs(output_directory, exist_ok=True)
 
         for filename in os.listdir(directory):
             if filename.endswith('.pf'):
                 input_file = os.path.join(directory, filename)
-                output_file = os.path.join(output_directory, filename)
-                process_file(input_file, output_file)
+                process_file(input_file, output_directory)
     else:
-        sys.exit('Missing params [win10compressed.pf] [win10decompressed.pf]')
+        sys.exit('Usage:\n'
+                 '  To process a single file: python script.py -f [win10compressed.pf] [output_directory]\n'
+                 '  To process all files in a directory: python w10pfdecomp.py [directory] [output_directory]')
 
 
 if __name__ == "__main__":
