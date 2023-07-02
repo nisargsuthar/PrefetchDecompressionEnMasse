@@ -4,9 +4,9 @@ Improved version of [dfirfpi](https://gist.github.com/dfirfpi)'s [w10pfdecomp.py
 ## Usage
 To process a single file:
 ```
-python w10pfdecomp.py -f [win10compressed.pf] [output_directory]
+python w10pfdecomp.py -f <win10compressed.pf> <output_directory>
 ```
 To process all files in a directory:
 ```
-python w10pfdecomp.py [directory] [output_directory]
+python w10pfdecomp.py <directory> <output_directory>
 ```
