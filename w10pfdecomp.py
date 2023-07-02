@@ -56,6 +56,8 @@ def process_file(input_file, output_directory):
         crcck = (signature & 0xF0000000) >> 28
         magic = signature & 0x00FFFFFF
         if magic != 0x004d414d:
+            if input_file.endswith('.pf'):
+                return
             sys.exit('Wrong signature... wrong file?')
 
         if crcck:
