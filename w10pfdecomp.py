@@ -138,8 +138,8 @@ def main():
         process_directory(directory, output_directory)
     else:
         sys.exit('Usage:\n'
-                 'To process a single file: python script.py -f <win10compressed.pf> <output_directory>\n'
-                 'To process all files in a directory: python script.py <directory> <output_directory>')
+                 'To process a single file: python PrefetchDecompressionEnMasse.py -f <compressed.pf> <output_directory>\n'
+                 'To process all files in a directory: python PrefetchDecompressionEnMasse.py <directory> <output_directory>')
 
 
 if __name__ == "__main__":
